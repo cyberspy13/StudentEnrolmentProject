@@ -1,0 +1,68 @@
+Developer plan:
+    1.Student management
+    
+    Need to create table/page in Business Central to store Student data. Newly created table/page should have list and card view with ability to add/modify the records.
+    The fields should be next:
+        -ID (PK)
+        -Name
+        -DOB
+        -Contact Details(Replicate Contact Card(Communication))
+        -Student authentication for system access(login and password)
+        -History of tracking of student enrolments and requests
+
+    2.Course management
+
+    Need to create table/page in Business Central to store Courses information.Newly created table/page should have list and card view with ability to add/modify the records.
+    The fields should be next:
+        -Courses ID (PK)
+        -Course name
+        -Course Overview
+        -Accreditation and Memberships
+        -Course details and modules
+        -Study Options
+    User should search for the available Course and be able to select on one of the entry, submit enrolment request.
+    We need to have some validation logic(to be confirmed) in here, if the current user can be enrolled for this course
+    
+
+    3.Enrolment Request Submission
+
+    Need to create table/page in Business Central to store  Enrolment Requests.Newly created table/page should have list and card view with ability to add/modify the records.
+    The fields should be next:
+        -Entry No(PK)
+        -Requested person details
+        -Requested Course details
+        -Timestamp and status
+
+    4.Enrolment Request Approval/Rejection
+    
+    Need to create another table/page in BC with approval/rejection functionality with next fields:
+        -status
+        -comments
+        -automatic update function of request upon dicision.We need to create that logic related to the Enrolment Request Submission page.
+    
+    5.Email notification
+
+    Have to add  Automatic generation of email content based on request status changes:
+        -Personalized notifications including student name, course details, and request outcome
+        -Immediate notification dispatch upon request approval or rejection
+
+    Suggestions on this one: we can use Business Central's email functionality, Implements an Email Notification codeunit to handle email generation and sending, 
+         Triggers email notifications automatically as part of the approval/rejection process
+
+Overall workflow:
+
+System Integration
+These components work together to create a seamless enrolment process:
+1. Students, authenticated through the Student Management component, use the 
+Enrolment Request Submission component to submit requests.
+2. These requests are stored and made available to administrators through the Enrolment
+Request Approval/Rejection component.
+3. Administrators process requests, utilizing information from both Student Management 
+and Course Management components.
+4. Upon decision, the Email Notifications component is triggered to inform the student.
+5. The Student Management and Course Management components are updated to reflect 
+new enrolments.
+   
+
+
+    
