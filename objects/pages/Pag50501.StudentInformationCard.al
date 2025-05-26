@@ -52,6 +52,29 @@ page 50501 "Student Information Card Page"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action("Find Course")
+            {
+                ApplicationArea = All;
+                Caption = 'Find Course';
+                Promoted = true;
+                PromotedCategory = Process;
+                Image = Agreement;
+
+                trigger OnAction()
+                var
+                    CourseInformationRecord: Record "Course Information";
+                    CourseInformationPage: Page "Course Information List";
+                begin
+                    CourseInformationPage.SetTableView(CourseInformationRecord);
+                    CourseInformationPage.RunModal();
+                end;
+            }
+        }
+    }
     trigger OnAfterGetCurrRecord()
     var
         StudentNoValidCodeunit: Codeunit "StudInfo Codeunit";

@@ -1,25 +1,22 @@
 Developer plan:
     1.Student management
     
-    Need to create table/page in Business Central to store Student data. Newly created table/page should have list and card view with ability to add/modify the records.
+    Need to create table/page in Business Central to store Student data.The newly created table/page should have list and card view with ability to add/modify the records.
     The fields should be next:
-        -ID (PK)
-        -Name
-        -DOB
-        -Contact Details(Replicate Contact Card(Communication))
-        -Student authentication for system access(login and password)
-        -History of tracking of student enrolments and requests
-
+        -ID (PK) - DONE
+        -Name - DONE
+        -DOB - DONE
+        -Contact Details - DONE
+        -Other fields related to the personal information also present. - DONE 
     2.Course management
 
-    Need to create table/page in Business Central to store Courses information.Newly created table/page should have list and card view with ability to add/modify the records.
+    Need to create table/page in Business Central to store Coursess information.Newly created table/page should have list and card view with ability to add/modify the records.
     The fields should be next:
-        -Courses ID (PK)
-        -Course name
-        -Course Overview
-        -Accreditation and Memberships
-        -Course details and modules
-        -Study Options
+        -Courses ID (PK) - DONE
+        -Course name - DONE 
+        -Course Overview - DONE
+        -Course details and modules - DONE
+        -Study Options - DONE
     User should search for the available Course and be able to select on one of the entry, submit enrolment request.
     We need to have some validation logic(to be confirmed) in here, if the current user can be enrolled for this course
     

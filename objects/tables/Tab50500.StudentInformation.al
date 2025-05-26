@@ -60,7 +60,7 @@ table 50500 "Student Information"
             Clustered = true;
         }
     }
-    // trigger OnInsert()
+    //  trigger OnInsert()
     // var
     //     StudentInformation: Record "Student Information";
     //     LastNo: Integer;

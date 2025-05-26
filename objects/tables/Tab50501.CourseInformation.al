@@ -1,0 +1,46 @@
+table 50501 "Course Information"
+{
+    Caption = 'Course Information';
+    DataClassification = ToBeClassified;
+
+    fields
+    {
+        field(1; "Course ID"; Code[10])
+        {
+            Caption = 'Course ID';
+        }
+        field(2; "Course Name"; Text[50])
+        {
+            Caption = 'Course Name';
+        }
+        field(3; "Course Overview"; Text[250])
+        {
+            Caption = 'Course Overview';
+        }
+        field(4; "Course Details"; Text[250])
+        {
+            Caption = 'Course Details';
+        }
+        field(5; "Study Options"; Enum "Study Options")
+        {
+            Caption = 'Study Options';
+        }
+        field(6; Capacity; Integer)
+        {
+            Caption = 'Capacity';
+        }
+    }
+    keys
+    {
+        key(PK; "Course ID")
+        {
+            Clustered = true;
+        }
+    }
+    trigger OnInsert()
+    begin
+        if rec."Course ID" = '' then begin
+            rec.TestField("Course ID");
+        end;
+    end;
+}
