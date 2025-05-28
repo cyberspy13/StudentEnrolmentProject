@@ -69,8 +69,11 @@ page 50501 "Student Information Card Page"
                     CourseInformationRecord: Record "Course Information";
                     CourseInformationPage: Page "Course Information List";
                 begin
-                    CourseInformationPage.SetTableView(CourseInformationRecord);
-                    CourseInformationPage.RunModal();
+
+                    CourseInformationRecord.SetRange(CapacityBoolIndicator, false);
+                    Page.Run(Page::"Course Information List", CourseInformationRecord);
+                    //CourseInformationPage.SetTableView(CourseInformationRecord);
+                    //CourseInformationPage.RunModal();
                 end;
             }
         }

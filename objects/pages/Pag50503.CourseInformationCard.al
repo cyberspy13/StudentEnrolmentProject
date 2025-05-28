@@ -40,6 +40,10 @@ page 50503 "Course Information Card"
                 {
                     ToolTip = 'Specifies the value of the Capacity field.', Comment = '%';
                 }
+                field(CapacityBoolIndicator; Rec.CapacityBoolIndicator)
+                {
+                    ToolTip = 'Specifies the value of the Capacity Indicators field.', Comment = '%';
+                }
             }
         }
     }

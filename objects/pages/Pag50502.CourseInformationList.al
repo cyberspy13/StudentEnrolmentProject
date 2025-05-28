@@ -6,6 +6,7 @@ page 50502 "Course Information List"
     SourceTable = "Course Information";
     UsageCategory = Lists;
     CardPageId = "Course Information Card";
+    Editable = false;
 
     layout
     {
@@ -36,6 +37,10 @@ page 50502 "Course Information List"
                 field(Capacity; Rec.Capacity)
                 {
                     ToolTip = 'Specifies the value of the Capacity field.', Comment = '%';
+                }
+                field(CapacityBoolIndicator; Rec.CapacityBoolIndicator)
+                {
+                    ToolTip = 'Specifies the value of the Capacity Indicators field.', Comment = '%';
                 }
             }
         }

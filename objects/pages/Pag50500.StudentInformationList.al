@@ -6,6 +6,7 @@ page 50500 "Student Information Page"
     SourceTable = "Student Information";
     UsageCategory = Lists;
     CardPageId = "Student Information Card Page";
+    Editable = false;
 
     layout
     {

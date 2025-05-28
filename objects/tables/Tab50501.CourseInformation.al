@@ -28,6 +28,17 @@ table 50501 "Course Information"
         field(6; Capacity; Integer)
         {
             Caption = 'Capacity';
+            trigger OnValidate()
+            begin
+                if Capacity > 10 then
+                    CapacityBoolIndicator := true
+                else
+                    CapacityBoolIndicator := false;
+            end;
+        }
+        field(7; CapacityBoolIndicator; Boolean)
+        {
+            Caption = 'Capacity Indicator';
         }
     }
     keys
