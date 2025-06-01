@@ -40,6 +40,11 @@ table 50501 "Course Information"
         {
             Caption = 'Capacity Indicator';
         }
+        field(8; StudentID; Code[20])
+        {
+            Caption = 'Student ID';
+            TableRelation = "Student Information"."Student No" where("Student No" = field(StudentID));
+        }
     }
     keys
     {
@@ -47,11 +52,18 @@ table 50501 "Course Information"
         {
             Clustered = true;
         }
+        key(FK; StudentID)
+        {
+            Clustered = false;
+        }
     }
+
     trigger OnInsert()
     begin
         if rec."Course ID" = '' then begin
             rec.TestField("Course ID");
         end;
     end;
+
+
 }

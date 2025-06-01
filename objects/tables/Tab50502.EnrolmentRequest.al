@@ -8,14 +8,17 @@ table 50502 "Enrolment Request"
         field(1; "Entry No."; Integer)
         {
             Caption = 'Entry No.';
+            AutoIncrement = true;
         }
         field(2; "Student No."; Code[20])
         {
             Caption = 'Student No.';
+            TableRelation = "Student Information"."Student No";
         }
         field(3; "Course ID"; Code[20])
         {
             Caption = 'Course ID';
+            TableRelation = "Course Information"."Course ID";
         }
         field(4; "Request Date"; Date)
         {
@@ -42,7 +45,7 @@ table 50502 "Enrolment Request"
         }
         key(FK; "Student No.", "Course ID")
         {
-
+            Clustered = false;
         }
     }
 }

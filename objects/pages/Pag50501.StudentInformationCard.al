@@ -69,16 +69,13 @@ page 50501 "Student Information Card Page"
                     CourseInformationRecord: Record "Course Information";
                     CourseInformationPage: Page "Course Information List";
                 begin
-
                     CourseInformationRecord.SetRange(CapacityBoolIndicator, false);
                     Page.Run(Page::"Course Information List", CourseInformationRecord);
-                    //CourseInformationPage.SetTableView(CourseInformationRecord);
-                    //CourseInformationPage.RunModal();
                 end;
             }
         }
     }
-    trigger OnAfterGetCurrRecord()
+    trigger OnNewRecord(BelowxRec: Boolean)
     var
         StudentNoValidCodeunit: Codeunit "StudInfo Codeunit";
     begin

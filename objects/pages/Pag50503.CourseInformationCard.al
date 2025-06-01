@@ -44,6 +44,40 @@ page 50503 "Course Information Card"
                 {
                     ToolTip = 'Specifies the value of the Capacity Indicators field.', Comment = '%';
                 }
+                field(StudentID; Rec.StudentID)
+                {
+                    ToolTip = 'Specifies the value of the Student ID field.', Comment = '%';
+                    TableRelation = "Student Information"."Student No";
+                }
+            }
+        }
+    }
+    actions
+    {
+        area(Processing)
+        {
+            action("Enroll")
+            {
+                ApplicationArea = All;
+                Caption = 'Enrol';
+                Promoted = true;
+                PromotedCategory = Process;
+                Image = Entry;
+                ToolTip = 'Enrol to the course.';
+
+                trigger OnAction()
+                var
+                    EnrolmentTable: Record "Enrolment Request";
+                begin
+                    EnrolmentTable.Init();
+                    EnrolmentTable."Course ID" := Rec."Course ID";
+                    EnrolmentTable."Student No." := Rec.StudentID;
+                    EnrolmentTable."Request Date" := Today();
+                    EnrolmentTable.Status := EnrolmentTable.Status::Pending;
+                    EnrolmentTable.Insert(true);
+                    Commit();
+                    Message('You have successfully enrolled in the course %1.', Rec."Course Name");
+                end;
             }
         }
     }
