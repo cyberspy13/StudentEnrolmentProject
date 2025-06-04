@@ -44,6 +44,8 @@ table 50500 "Student Information"
             Caption = 'Address';
         }
         field(8; Postcode; Code[10])
+
+
         {
             Caption = 'Postcode';
         }

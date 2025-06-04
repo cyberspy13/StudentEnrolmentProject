@@ -56,7 +56,7 @@ page 50503 "Course Information Card"
     {
         area(Processing)
         {
-            action("Enroll")
+            action("Enrol")
             {
                 ApplicationArea = All;
                 Caption = 'Enrol';
@@ -66,19 +66,47 @@ page 50503 "Course Information Card"
                 ToolTip = 'Enrol to the course.';
 
                 trigger OnAction()
-                var
-                    EnrolmentTable: Record "Enrolment Request";
                 begin
-                    EnrolmentTable.Init();
-                    EnrolmentTable."Course ID" := Rec."Course ID";
-                    EnrolmentTable."Student No." := Rec.StudentID;
-                    EnrolmentTable."Request Date" := Today();
-                    EnrolmentTable.Status := EnrolmentTable.Status::Pending;
-                    EnrolmentTable.Insert(true);
-                    Commit();
-                    Message('You have successfully enrolled in the course %1.', Rec."Course Name");
+                    CourseInformationTable.Get(Rec."Course ID");
+                    if CourseInformationTable.StudentID = '' then begin
+                        Message('You can not be enrolled on this course as it is not assigned to any student.');
+                    end else begin
+                        EnrolmentTable.Init();
+                        EnrolmentTable."Course ID" := Rec."Course ID";
+                        EnrolmentTable."Student No." := Rec.StudentID;
+                        EnrolmentTable."Request Date" := Today();
+                        EnrolmentTable.Status := EnrolmentTable.Status::Pending;
+                        EnrolmentTable.Insert(true);
+                        Message('You have successfully enrolled in the course %1.', Rec."Course Name");
+
+                        if EnrolmentTable."Student No." <> '' then begin
+                            CourseInformationTable.StudentID := '';
+                            CourseInformationTable.Capacity += 1;
+                            CourseInformationTable.Modify(true);
+                        end;
+                    end;
+                end;
+            }
+            action("Additional Information")
+            {
+                ApplicationArea = All;
+                Caption = 'Additional Information';
+                Promoted = true;
+                PromotedCategory = Process;
+                Image = Info;
+                ToolTip = 'View additional information about the course.';
+
+                trigger OnAction()
+                var
+                    CourseID: Code[20];
+                begin
+                    CourseAdditionalInformationTable.ParseCourseID(Rec."Course ID");
                 end;
             }
         }
     }
+    var
+        EnrolmentTable: Record "Enrolment Request";
+        CourseInformationTable: Record "Course Information";
+        CourseAdditionalInformationTable: Record CourseAdditionalInformation;
 }

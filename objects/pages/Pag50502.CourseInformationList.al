@@ -42,7 +42,48 @@ page 50502 "Course Information List"
                 {
                     ToolTip = 'Specifies the value of the Capacity Indicators field.', Comment = '%';
                 }
+                field(StudentID; Rec.StudentID)
+                {
+                    ToolTip = 'Specifies the value of the Student ID field.', Comment = '%';
+                    //TableRelation = "Student Information"."Student No";
+                }
+            }
+        }
+
+    }
+    actions
+    {
+        area(Processing)
+        {
+            action("Assign Student ID")
+            {
+                ApplicationArea = All;
+                Caption = 'Assign Student ID';
+                Promoted = true;
+                PromotedCategory = Process;
+                Image = Agreement;
+
+                trigger OnAction()
+                begin
+                    if Rec.StudentID <> '' then begin
+                        Message('Student ID %1 already assigned to the course %2.', Rec.StudentID, Rec."Course ID");
+                    end else
+                        AssignStudentIdCodeunit.AssignStudentIdToCourse(StudentNumberInfo, Rec."Course ID");
+                end;
             }
         }
     }
+
+    var
+        StudentNumberInfo: Code[20];
+        AssignStudentIdCodeunit: Codeunit "AssignStudentId";
+
+    procedure SetStudent(StudentNo: code[20])
+    begin
+        StudentNumberInfo := StudentNo;
+    end;
+
+
+
+
 }

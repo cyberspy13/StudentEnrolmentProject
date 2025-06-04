@@ -28,13 +28,15 @@ table 50501 "Course Information"
         field(6; Capacity; Integer)
         {
             Caption = 'Capacity';
-            trigger OnValidate()
-            begin
-                if Capacity > 10 then
-                    CapacityBoolIndicator := true
-                else
-                    CapacityBoolIndicator := false;
-            end;
+            MinValue = 0;
+            Editable = false;
+            // trigger OnValidate()
+            // begin
+            //     if Capacity > 10 then
+            //         CapacityBoolIndicator := true
+            //     else
+            //         CapacityBoolIndicator := false;
+            // end;
         }
         field(7; CapacityBoolIndicator; Boolean)
         {
@@ -43,6 +45,7 @@ table 50501 "Course Information"
         field(8; StudentID; Code[20])
         {
             Caption = 'Student ID';
+            Editable = false;
             TableRelation = "Student Information"."Student No" where("Student No" = field(StudentID));
         }
     }
@@ -65,5 +68,15 @@ table 50501 "Course Information"
         end;
     end;
 
+    procedure FindCourse(StudentNo: code[20])
+    var
+        CourseInformationTable: Record "Course Information";
+        CourseInformationPageList: Page "Course Information List";
+    begin
+        CourseInformationTable.SetRange(CapacityBoolIndicator, false);
+        CourseInformationPageList.SetStudent(StudentNo);
+        CourseInformationPageList.SetTableView(CourseInformationTable);
+        CourseInformationPageList.Run();
+    end;
 
 }

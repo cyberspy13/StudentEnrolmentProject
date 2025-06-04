@@ -67,10 +67,8 @@ page 50501 "Student Information Card Page"
                 trigger OnAction()
                 var
                     CourseInformationRecord: Record "Course Information";
-                    CourseInformationPage: Page "Course Information List";
                 begin
-                    CourseInformationRecord.SetRange(CapacityBoolIndicator, false);
-                    Page.Run(Page::"Course Information List", CourseInformationRecord);
+                    CourseInformationRecord.FindCourse(Rec."Student No");
                 end;
             }
         }
