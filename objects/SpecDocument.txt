@@ -33,9 +33,9 @@ Developer plan:
     4.Enrolment Request Approval/Rejection
     
     Need to create another table/page in BC with approval/rejection functionality with next fields:
-        -status
-        -comments
-        -automatic update function of request upon dicision.We need to create that logic related to the Enrolment Request Submission page.
+        -status - DONE
+        -comments - DONE
+        -automatic update function of request upon dicision.We need to create that logic related to the Enrolment Request Submission page. -DONE
     
     5.Email notification
 
