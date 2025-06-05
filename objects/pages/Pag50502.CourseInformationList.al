@@ -67,6 +67,8 @@ page 50502 "Course Information List"
                 begin
                     if Rec.StudentID <> '' then begin
                         Message('Student ID %1 already assigned to the course %2.', Rec.StudentID, Rec."Course ID");
+                    end else if Rec.CapacityBoolIndicator = true then begin
+                        Message('Student ID cannot be assigned to the course %1 as the capacity limit has been reached.', Rec."Course ID");
                     end else
                         AssignStudentIdCodeunit.AssignStudentIdToCourse(StudentNumberInfo, Rec."Course ID");
                 end;

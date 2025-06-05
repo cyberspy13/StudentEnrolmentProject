@@ -8,7 +8,8 @@ table 50503 CourseAdditionalInformation
         field(1; "CourseAdditionId"; Code[20])
         {
             Caption = 'Course ID';
-            TableRelation = "Course Information"."Course ID" where("Course ID" = field("CourseAdditionId"));
+            Editable = false;
+            //TableRelation = "Course Information"."Course ID" where("Course ID" = field("CourseAdditionId"));
         }
         field(2; "Capacity "; Integer)
         {

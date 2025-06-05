@@ -30,13 +30,26 @@ table 50501 "Course Information"
             Caption = 'Capacity';
             MinValue = 0;
             Editable = false;
-            // trigger OnValidate()
-            // begin
-            //     if Capacity > 10 then
-            //         CapacityBoolIndicator := true
-            //     else
-            //         CapacityBoolIndicator := false;
-            // end;
+            trigger OnLookup()
+            var
+                CourseAdditionalInformationTable: Record "CourseAdditionalInformation";
+                CapacityVar: Integer;
+            begin
+                If Rec."Course ID" = CourseAdditionalInformationTable.CourseAdditionId then begin
+                    CapacityVar := CourseAdditionalInformationTable."Capacity ";
+                    if CapacityVar <> 0 then begin
+                        if Capacity > CapacityVar then
+                            CapacityBoolIndicator := true
+                        else
+                            CapacityBoolIndicator := false;
+                    end else
+                        CapacityVar := 10;
+                    if Capacity > CapacityVar then
+                        CapacityBoolIndicator := true
+                    else
+                        CapacityBoolIndicator := false;
+                end;
+            end;
         }
         field(7; CapacityBoolIndicator; Boolean)
         {

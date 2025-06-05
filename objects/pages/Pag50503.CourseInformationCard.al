@@ -68,8 +68,16 @@ page 50503 "Course Information Card"
                 trigger OnAction()
                 begin
                     CourseInformationTable.Get(Rec."Course ID");
+                    CourseAdditionalInformationTable.Get(Rec."Course ID");
                     if CourseInformationTable.StudentID = '' then begin
                         Message('You can not be enrolled on this course as it is not assigned to any student.');
+                    end else if CourseInformationTable.CapacityBoolIndicator = true then begin
+                        Message('You can not be enrolled on this course as it is does not have valid Capacity Indicator status.');
+                    end else if CourseInformationTable.Capacity = CourseAdditionalInformationTable."Capacity " then begin
+                        Message('You can not be enrolled on this course as the limit of capacity has been reached.');
+                        CourseInformationTable.StudentID := '';
+                        CourseInformationTable.CapacityBoolIndicator := true;
+                        CourseInformationTable.Modify(true);
                     end else begin
                         EnrolmentTable.Init();
                         EnrolmentTable."Course ID" := Rec."Course ID";
@@ -82,6 +90,7 @@ page 50503 "Course Information Card"
                         if EnrolmentTable."Student No." <> '' then begin
                             CourseInformationTable.StudentID := '';
                             CourseInformationTable.Capacity += 1;
+                            //CapacityFieldCodeunit.GetCapacityField(Rec."Course ID", CourseInformationTable.Capacity, CourseInformationTable.CapacityBoolIndicator);
                             CourseInformationTable.Modify(true);
                         end;
                     end;
@@ -109,4 +118,5 @@ page 50503 "Course Information Card"
         EnrolmentTable: Record "Enrolment Request";
         CourseInformationTable: Record "Course Information";
         CourseAdditionalInformationTable: Record CourseAdditionalInformation;
+        CapacityFieldCodeunit: Codeunit "CapacityField";
 }

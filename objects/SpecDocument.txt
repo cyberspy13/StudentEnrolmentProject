@@ -17,18 +17,18 @@ Developer plan:
         -Course Overview - DONE
         -Course details and modules - DONE
         -Study Options - DONE
-    User should search for the available Course and be able to select on one of the entry, submit enrolment request.
-    We need to have some validation logic(to be confirmed) in here, if the current user can be enrolled for this course
+    User should search for the available Course and be able to select on one of the entry, submit enrolment request. - DONE
+    We need to have some validation logic(to be confirmed) in here, if the current user can be enrolled for this course - DONE
     
 
     3.Enrolment Request Submission
 
     Need to create table/page in Business Central to store  Enrolment Requests.Newly created table/page should have list and card view with ability to add/modify the records.
     The fields should be next:
-        -Entry No(PK)
-        -Requested person details
-        -Requested Course details
-        -Timestamp and status
+        -Entry No(PK) - DONE
+        -Requested person details - DONE
+        -Requested Course details - DONE
+        -Timestamp and status -DONE
 
     4.Enrolment Request Approval/Rejection
     

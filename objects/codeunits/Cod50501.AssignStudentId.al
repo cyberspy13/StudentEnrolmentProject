@@ -9,12 +9,10 @@ codeunit 50501 AssignStudentId
             CourseInformationTable.StudentID := StudentNo;
             CourseInformationTable.Modify(true);
             Commit();
-            Message('Student ID %1 has been assigned to the course %2.', StudentNo, CourseID);
-
+            if CourseInformationTable.StudentID <> '' then begin
+                Message('Student ID %1 has been assigned to the course %2.', StudentNo, CourseID);
+            end else
+                Message('Failed to assign Student ID to the course %2.', StudentNo, CourseID);
         end;
     end;
-
-
-
-
 }
