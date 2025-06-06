@@ -36,6 +36,12 @@ table 50502 "Enrolment Request"
         {
             Caption = 'Approval Date';
         }
+        field(8; "Notification sent"; Boolean)
+        {
+            Caption = 'Notification sent';
+            ToolTip = 'Indicates whether a notification has been sent to the student.';
+            InitValue = false;
+        }
     }
     keys
     {

@@ -1,5 +1,5 @@
 Developer plan:
-    1.Student management
+    1.Student management - DONE
     
     Need to create table/page in Business Central to store Student data.The newly created table/page should have list and card view with ability to add/modify the records.
     The fields should be next:
@@ -8,7 +8,7 @@ Developer plan:
         -DOB - DONE
         -Contact Details - DONE
         -Other fields related to the personal information also present. - DONE 
-    2.Course management
+    2.Course management - DONE
 
     Need to create table/page in Business Central to store Coursess information.Newly created table/page should have list and card view with ability to add/modify the records.
     The fields should be next:
@@ -21,7 +21,7 @@ Developer plan:
     We need to have some validation logic(to be confirmed) in here, if the current user can be enrolled for this course - DONE
     
 
-    3.Enrolment Request Submission
+    3.Enrolment Request Submission - DONE
 
     Need to create table/page in Business Central to store  Enrolment Requests.Newly created table/page should have list and card view with ability to add/modify the records.
     The fields should be next:
@@ -30,7 +30,7 @@ Developer plan:
         -Requested Course details - DONE
         -Timestamp and status -DONE
 
-    4.Enrolment Request Approval/Rejection
+    4.Enrolment Request Approval/Rejection - DONE
     
     Need to create another table/page in BC with approval/rejection functionality with next fields:
         -status - DONE
@@ -40,8 +40,8 @@ Developer plan:
     5.Email notification
 
     Have to add  Automatic generation of email content based on request status changes:
-        -Personalized notifications including student name, course details, and request outcome
-        -Immediate notification dispatch upon request approval or rejection
+        -Personalized notifications including student name, course details, and request outcome - DONE
+        -Immediate notification dispatch upon request approval or rejection - DONE
 
     Suggestions on this one: we can use Business Central's email functionality, Implements an Email Notification codeunit to handle email generation and sending, 
          Triggers email notifications automatically as part of the approval/rejection process
