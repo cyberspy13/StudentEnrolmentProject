@@ -61,5 +61,16 @@ and Course Management components.
 new enrolments.
    
 
+   Additional requirements:
+• Status Tracking: Students can log in at any time to check their request status.
+• Capacity Management: The system may automatically close enrolment for a course 
+when it reaches capacity.
+• Waitlisting: If a course is full, subsequent approved requests might be placed on a 
+waitlist.
+• Cancellations: Students might be given the option to cancel their enrolment, triggering 
+a reverse workflow.
+• Reporting: Administrators can generate reports on enrolment statistics, popular 
+courses, etc.
+
 
     
