@@ -54,4 +54,17 @@ table 50502 "Enrolment Request"
             Clustered = false;
         }
     }
+    procedure CheckStatus(StudentNo: Code[20])
+    var
+        EnrolmentRequest: Record "Enrolment Request";
+        EnrolmentRequestPage: Page "Enrolment Request";
+    begin
+        EnrolmentRequest.SetRange("Student No.", StudentNo);
+        EnrolmentRequest.SetRange(Status, EnrolmentRequest.Status::Pending);
+        if not EnrolmentRequest.FindFirst() then
+            Error('No pending enrolment requests found for student %1.', StudentNo);
+        EnrolmentRequestPage.SetTableView(EnrolmentRequest);
+        EnrolmentRequestPage.Run();
+        
+    end;
 }

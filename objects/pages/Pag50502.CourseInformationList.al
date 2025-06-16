@@ -17,8 +17,6 @@ page 50502 "Course Information List"
                 field("Course ID"; Rec."Course ID")
                 {
                     ToolTip = 'Specifies the value of the Course ID field.', Comment = '%';
-                    DrillDownPageId = "Course Information Card";
-                    LookupPageId = "Course Information List";
                 }
                 field("Course Name"; Rec."Course Name")
                 {

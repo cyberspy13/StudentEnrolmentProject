@@ -1,6 +1,6 @@
 table 50503 CourseAdditionalInformation
 {
-    Caption = 'CourseAdditionalInformation';
+    Caption = 'Course Additional Information';
     DataClassification = ToBeClassified;
 
     fields

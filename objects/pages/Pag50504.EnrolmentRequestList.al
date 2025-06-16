@@ -5,6 +5,7 @@ page 50504 "Enrolment Request"
     PageType = List;
     SourceTable = "Enrolment Request";
     UsageCategory = Lists;
+    Editable = False;
 
     layout
     {
@@ -157,6 +158,38 @@ page 50504 "Enrolment Request"
                             Message('Notification email has been sent already');
                     end
                 end;
+            }
+        }
+        area(Navigation)
+        {
+            group("Cancel")
+            {
+                action("Cancel Request")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Cancel Request';
+                    Image = Cancel;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    PromotedIsBig = true;
+
+                    trigger OnAction()
+                    var
+                        EnrolmentRequest: Record "Enrolment Request";
+                        CourseInformCapacityFunctionCodeunit: Codeunit CourseInformCapacityFunction;
+                    begin
+                        EnrolmentRequest.SetRange("Entry No.", Rec."Entry No.");
+                        if EnrolmentRequest.FindFirst() then begin
+                            if EnrolmentRequest.Status = EnrolmentRequest.Status::Pending then begin
+                                CourseInformCapacityFunctionCodeunit.GetCourseCapacityInfo(Rec."Course ID", Rec."Student No.");
+                                EnrolmentRequest.Delete(true);
+                                Message('Enrolment request has been cancelled successfully.');
+                            end else
+                                Error('You can only cancel requests that are still pending.');
+                        end else
+                            Error('Enrolment request not found.');
+                    end;
+                }
             }
         }
     }

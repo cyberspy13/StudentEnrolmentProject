@@ -71,6 +71,21 @@ page 50501 "Student Information Card Page"
                     CourseInformationRecord.FindCourse(Rec."Student No");
                 end;
             }
+            action("Check the Status")
+            {
+                ApplicationArea = All;
+                Caption = 'Check the Status';
+                Promoted = true;
+                PromotedCategory = Process;
+                Image = Check;
+
+                trigger OnAction()
+                var
+                    EnrolmentRequestRecord: Record "Enrolment Request";
+                begin
+                    EnrolmentRequestRecord.CheckStatus(Rec."Student No");
+                end;
+            }
         }
     }
     trigger OnNewRecord(BelowxRec: Boolean)

@@ -46,29 +46,28 @@ Developer plan:
     Suggestions on this one: we can use Business Central's email functionality, Implements an Email Notification codeunit to handle email generation and sending, 
          Triggers email notifications automatically as part of the approval/rejection process
 
-Overall workflow:
+Overall workflow(STEPS):
 
-System Integration
-These components work together to create a seamless enrolment process:
-1. Students, authenticated through the Student Management component, use the 
-Enrolment Request Submission component to submit requests.
-2. These requests are stored and made available to administrators through the Enrolment
-Request Approval/Rejection component.
-3. Administrators process requests, utilizing information from both Student Management 
-and Course Management components.
-4. Upon decision, the Email Notifications component is triggered to inform the student.
-5. The Student Management and Course Management components are updated to reflect 
-new enrolments.
-   
+1. The user search for the "Student Information page".
+2. Press "New" and add informarion to the Student Card.
+3. Then press on the "Find Course" ribbon tab and select interested entry from the Course list page.
+4. If we dont have any courses in the list we need to add one or search for the Courses Information page and add from there.
+5. Please note each course have "Additional Information" page where the user can add Course capacity limit. The logic kicks in, when the requests are higher then the limit.
+6. Press "Assign Student ID" from the Course information page.
+7. Go to the course and press "Enrol".
+8. Notification message should be saying "you have successfully enroled to the course".
+9. Capacity should increase by 1 every time when the user enroled to the course.
+10. Search for the "Enrolment Request" page and "Approve" or "Reject" the entry.
+11. It should automatically create an email saying it was approved and rejected.
 
    Additional requirements:
-• Status Tracking: Students can log in at any time to check their request status.
+• Status Tracking: Students can log in at any time to check their request status. - COMPLETED
 • Capacity Management: The system may automatically close enrolment for a course 
-when it reaches capacity.
+when it reaches capacity. - COMPLETED
 • Waitlisting: If a course is full, subsequent approved requests might be placed on a 
-waitlist.
+waitlist. - NEED TO DO 
 • Cancellations: Students might be given the option to cancel their enrolment, triggering 
-a reverse workflow.
+a reverse workflow. - doing it now
 • Reporting: Administrators can generate reports on enrolment statistics, popular 
 courses, etc.
 

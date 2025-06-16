@@ -69,31 +69,47 @@ page 50503 "Course Information Card"
                 begin
                     CourseInformationTable.Get(Rec."Course ID");
                     CourseAdditionalInformationTable.Get(Rec."Course ID");
-                    if CourseInformationTable.StudentID = '' then begin
-                        Message('You can not be enrolled on this course as it is not assigned to any student.');
-                    end else if CourseInformationTable.CapacityBoolIndicator = true then begin
-                        Message('You can not be enrolled on this course as it is does not have valid Capacity Indicator status.');
-                    end else if CourseInformationTable.Capacity = CourseAdditionalInformationTable."Capacity " then begin
-                        Message('You can not be enrolled on this course as the limit of capacity has been reached.');
-                        CourseInformationTable.StudentID := '';
-                        CourseInformationTable.CapacityBoolIndicator := true;
-                        CourseInformationTable.Modify(true);
-                    end else begin
-                        EnrolmentTable.Init();
-                        EnrolmentTable."Course ID" := Rec."Course ID";
-                        EnrolmentTable."Student No." := Rec.StudentID;
-                        EnrolmentTable."Request Date" := Today();
-                        EnrolmentTable.Status := EnrolmentTable.Status::Pending;
-                        EnrolmentTable.Insert(true);
-                        Message('You have successfully enrolled in the course %1.', Rec."Course Name");
+                    EnrolmentTable.SetRange("Student No.", Rec.StudentID);
+                    EnrolmentTable.SetRange("Course ID", Rec."Course ID");
+                    Case true of
+                        (CourseInformationTable.StudentID = ''):
+                            Message('You can not be enrolled on this course as it is not assigned to any student.');
 
-                        if EnrolmentTable."Student No." <> '' then begin
-                            CourseInformationTable.StudentID := '';
-                            CourseInformationTable.Capacity += 1;
-                            //CapacityFieldCodeunit.GetCapacityField(Rec."Course ID", CourseInformationTable.Capacity, CourseInformationTable.CapacityBoolIndicator);
-                            CourseInformationTable.Modify(true);
+                        (CourseInformationTable.CapacityBoolIndicator = true):
+                            Message('You can not be enrolled on this course as it is does not have valid Capacity Indicator status.');
+
+                        (CourseInformationTable.Capacity = CourseAdditionalInformationTable."Capacity "):
+                            begin
+                                //Message('You can not be enrolled on this course as the limit of capacity has been reached.');
+                                Message('Please configure Additional Information Capacity Indicator for this course.');
+                            end;
+
+                        (EnrolmentTable.FindFirst()):
+                            begin
+                                Message('%2 is already enrolled in the course %1.', Rec."Course Name", EnrolmentTable."Student No.");
+                                CourseInformationTable.StudentID := '';
+                                CourseInformationTable.Modify(true);
+                                Exit;
+                            end;
+                        else begin
+                            EnrolmentTable.Init();
+                            EnrolmentTable."Course ID" := Rec."Course ID";
+                            EnrolmentTable."Student No." := Rec.StudentID;
+                            EnrolmentTable."Request Date" := Today();
+                            EnrolmentTable.Status := EnrolmentTable.Status::Pending;
+                            EnrolmentTable.Insert(true);
+                            Message('You have successfully enrolled in the course %1.', Rec."Course Name");
+
+                            if EnrolmentTable."Student No." <> '' then begin
+                                CourseInformationTable.StudentID := '';
+                                CourseInformationTable.Capacity += 1;
+                                if CourseInformationTable.Capacity = CourseAdditionalInformationTable."Capacity " then begin
+                                    CourseInformationTable.CapacityBoolIndicator := true;
+                                end;
+                                CourseInformationTable.Modify(true);
+                            end;
                         end;
-                    end;
+                    End;
                 end;
             }
             action("Additional Information")
@@ -110,6 +126,25 @@ page 50503 "Course Information Card"
                     CourseID: Code[20];
                 begin
                     CourseAdditionalInformationTable.ParseCourseID(Rec."Course ID");
+                end;
+            }
+            action("Reset Fields")
+            {
+                ApplicationArea = All;
+                Caption = 'Reset Fields';
+                Promoted = true;
+                PromotedCategory = Process;
+                Image = ResetStatus;
+                ToolTip = 'Reset Fields';
+
+                trigger OnAction()
+                begin
+                    CourseInformationTable.Get(Rec."Course ID");
+                    CourseAdditionalInformationTable.Get(Rec."Course ID");
+                    CourseInformationTable.StudentID := '';
+                    CourseInformationTable.CapacityBoolIndicator := false;
+                    CourseInformationTable.Modify(true);
+                    Message('Fields have been reset successfully.');
                 end;
             }
         }
