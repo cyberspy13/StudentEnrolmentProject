@@ -127,6 +127,7 @@ page 50504 "Enrolment Request"
                     TempBlob: Codeunit "Temp Blob";
                     Body: Text;
                     Ins: InStream;
+                    CourseInformCapacityFunctionCodeunit: Codeunit CourseInformCapacityFunction;
                 begin
 
                     ApprovalEntry.SetRange("Entry No.", Rec."Entry No.");
@@ -148,6 +149,7 @@ page 50504 "Enrolment Request"
                             EmailItem.Init();
                             EmailItem."Send to" := StudentRecord.Email;
                             EmailItem.Subject := 'Your Enrolment Request has been  Rejected';
+                            CourseInformCapacityFunctionCodeunit.GetCourseCapacityInfo(Rec."Course ID", Rec."Student No.");
                             EmailItem.SetBodyText(Body);
                             EmailItem.Body.CreateInStream(Ins);
                             EmailItem.ID := CreateGuid();

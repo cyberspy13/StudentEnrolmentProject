@@ -81,13 +81,21 @@ table 50501 "Course Information"
         end;
     end;
 
-    procedure FindCourse(StudentNo: code[20])
     var
         CourseInformationTable: Record "Course Information";
         CourseInformationPageList: Page "Course Information List";
+
+    procedure FindCourse(StudentNo: code[20])
     begin
         CourseInformationTable.SetRange(CapacityBoolIndicator, false);
         CourseInformationPageList.SetStudent(StudentNo);
+        CourseInformationPageList.SetTableView(CourseInformationTable);
+        CourseInformationPageList.Run();
+    end;
+
+    procedure FindWaitlistedCourses()
+    begin
+        CourseInformationTable.SetRange(CapacityBoolIndicator, true);
         CourseInformationPageList.SetTableView(CourseInformationTable);
         CourseInformationPageList.Run();
     end;

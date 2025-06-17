@@ -71,6 +71,21 @@ page 50501 "Student Information Card Page"
                     CourseInformationRecord.FindCourse(Rec."Student No");
                 end;
             }
+            action("Waitlisted Courses")
+            {
+                ApplicationArea = All;
+                Caption = 'Waitlisted Courses';
+                Promoted = true;
+                PromotedCategory = Process;
+                Image = New;
+
+                trigger OnAction()
+                var
+                    CourseInformationRecord: Record "Course Information";
+                begin
+                    CourseInformationRecord.FindWaitlistedCourses();
+                end;
+            }
             action("Check the Status")
             {
                 ApplicationArea = All;
