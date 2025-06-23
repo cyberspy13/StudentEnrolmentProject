@@ -83,7 +83,7 @@ page 50501 "Student Information Card Page"
                 var
                     CourseInformationRecord: Record "Course Information";
                 begin
-                    CourseInformationRecord.FindWaitlistedCourses();
+                    CourseInformationRecord.FindWaitlistedCourses(Rec."Student No");
                 end;
             }
             action("Check the Status")

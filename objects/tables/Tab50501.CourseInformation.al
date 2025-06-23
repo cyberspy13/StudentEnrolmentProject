@@ -93,9 +93,10 @@ table 50501 "Course Information"
         CourseInformationPageList.Run();
     end;
 
-    procedure FindWaitlistedCourses()
+    procedure FindWaitlistedCourses(StudentNo2: code[20])
     begin
         CourseInformationTable.SetRange(CapacityBoolIndicator, true);
+        CourseInformationPageList.SetStudent(StudentNo2);
         CourseInformationPageList.SetTableView(CourseInformationTable);
         CourseInformationPageList.Run();
     end;

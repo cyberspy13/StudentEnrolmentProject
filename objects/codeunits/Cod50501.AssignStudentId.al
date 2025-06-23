@@ -15,4 +15,20 @@ codeunit 50501 AssignStudentId
                 Message('Failed to assign Student ID to the course %2.', StudentNo, CourseID);
         end;
     end;
+
+    procedure AssignStudentIdToWaitlistedCourse(StudentNo: Code[20]; CourseID: Code[10])
+    var
+        WaitlistedCourseInformationTable: Record "Waitlisted Courses";
+    begin
+        if WaitlistedCourseInformationTable.StudentID = '' then begin
+            WaitlistedCourseInformationTable.Get(CourseID);
+            WaitlistedCourseInformationTable.StudentID := StudentNo;
+            WaitlistedCourseInformationTable.Modify(true);
+            Commit();
+            if WaitlistedCourseInformationTable.StudentID <> '' then begin
+                Message('Student ID %1 has been assigned to the course %2.', StudentNo, CourseID);
+            end else
+                Message('Failed to assign Student ID to the course %2.', StudentNo, CourseID);
+        end;
+    end;
 }
