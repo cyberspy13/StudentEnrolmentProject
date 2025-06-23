@@ -65,11 +65,11 @@ Overall workflow(STEPS):
 • Capacity Management: The system may automatically close enrolment for a course 
 when it reaches capacity. - COMPLETED
 • Waitlisting: If a course is full, subsequent approved requests might be placed on a 
-waitlist. - NEED TO DO 
+waitlist. - Waitlisted option as a view added - COMPLETED
 • Cancellations: Students might be given the option to cancel their enrolment, triggering 
 a reverse workflow. - COMPLETED
 • Reporting: Administrators can generate reports on enrolment statistics, popular 
-courses, etc.
+courses, etc. - Need to do
 
 
     
