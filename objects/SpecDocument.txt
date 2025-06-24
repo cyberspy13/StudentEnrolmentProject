@@ -69,7 +69,7 @@ waitlist. - Waitlisted option as a view added - COMPLETED
 • Cancellations: Students might be given the option to cancel their enrolment, triggering 
 a reverse workflow. - COMPLETED
 • Reporting: Administrators can generate reports on enrolment statistics, popular 
-courses, etc. - Need to do
+courses, etc. - COMPLETED
 
 
     

@@ -161,35 +161,48 @@ page 50504 "Enrolment Request"
                     end
                 end;
             }
+            action(Cancel)
+            {
+                ApplicationArea = All;
+                Caption = 'Cancel Request';
+                Image = Cancel;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+
+                trigger OnAction()
+                var
+                    EnrolmentRequest: Record "Enrolment Request";
+                    CourseInformCapacityFunctionCodeunit: Codeunit CourseInformCapacityFunction;
+                begin
+                    EnrolmentRequest.SetRange("Entry No.", Rec."Entry No.");
+                    if EnrolmentRequest.FindFirst() then begin
+                        if EnrolmentRequest.Status = EnrolmentRequest.Status::Pending then begin
+                            CourseInformCapacityFunctionCodeunit.GetCourseCapacityInfo(Rec."Course ID", Rec."Student No.");
+                            EnrolmentRequest.Delete(true);
+                            Message('Enrolment request has been cancelled successfully.');
+                        end else
+                            Error('You can only cancel requests that are still pending.');
+                    end else
+                        Error('Enrolment request not found.');
+                end;
+            }
         }
         area(Navigation)
         {
-            group("Cancel")
+            group(PrintSend)
             {
-                action("Cancel Request")
+                Caption = 'Print/Send';
+                action(PrintStudentCourseInformation)
                 {
                     ApplicationArea = All;
-                    Caption = 'Cancel Request';
-                    Image = Cancel;
-                    Promoted = true;
-                    PromotedCategory = Process;
-                    PromotedIsBig = true;
+                    Caption = 'Print Course Overview Report';
 
                     trigger OnAction()
                     var
-                        EnrolmentRequest: Record "Enrolment Request";
-                        CourseInformCapacityFunctionCodeunit: Codeunit CourseInformCapacityFunction;
+                        PrintCourseReport: report "Student Course Report";
                     begin
-                        EnrolmentRequest.SetRange("Entry No.", Rec."Entry No.");
-                        if EnrolmentRequest.FindFirst() then begin
-                            if EnrolmentRequest.Status = EnrolmentRequest.Status::Pending then begin
-                                CourseInformCapacityFunctionCodeunit.GetCourseCapacityInfo(Rec."Course ID", Rec."Student No.");
-                                EnrolmentRequest.Delete(true);
-                                Message('Enrolment request has been cancelled successfully.');
-                            end else
-                                Error('You can only cancel requests that are still pending.');
-                        end else
-                            Error('Enrolment request not found.');
+                        PrintCourseReport.Run();
                     end;
                 }
             }
