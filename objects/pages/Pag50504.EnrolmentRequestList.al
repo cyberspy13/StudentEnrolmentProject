@@ -56,147 +56,14 @@ page 50504 "Enrolment Request"
     {
         area(processing)
         {
-            action(Approve)
-            {
-                ApplicationArea = Suite;
-                Caption = 'Approve';
-                Image = Approve;
-                Scope = Repeater;
-                ToolTip = 'Approve the requested changes.';
-
-
-                trigger OnAction()
-                var
-                    ApprovalEntry: Record "Enrolment Request";
-                    StudentRecord: Record "Student Information";
-                    MailMessage: Codeunit "Email Message";
-                    Email: Codeunit "Mail Management";
-                    EmailItem: Record "Email Item";
-                    EmailScenario: Enum "Email Scenario";
-                    TempBlob: Codeunit "Temp Blob";
-                    Body: Text;
-                    Ins: InStream;
-                begin
-
-                    ApprovalEntry.SetRange("Entry No.", Rec."Entry No.");
-                    if ApprovalEntry.FindFirst() then begin
-                        if ApprovalEntry."Notification sent" = false then begin
-                            StudentRecord.Get(ApprovalEntry."Student No.");
-                            ApprovalEntry.Status := ApprovalEntry.Status::Approved;
-                            ApprovalEntry."Approved ID" := UserId();
-                            ApprovalEntry."Approval Date" := CurrentDateTime();
-                            ApprovalEntry."Notification sent" := true;
-                            ApprovalEntry.Modify(true);
-                            Commit();
-
-                            Body := 'Dear ' + StudentRecord."First Name" + ',<br><br><br>' +
-                                   'Your enrolment request for the course ' + ApprovalEntry."Course ID" + ' has been approved.' + '<br><br><br><br>' +
-                                   'Best regards,' + '<br>' +
-                                   '<em>' + 'Your University Team' + '</em>';
-
-                            EmailItem.Init();
-                            EmailItem."Send to" := StudentRecord.Email;
-                            EmailItem.Subject := 'Your Enrolment Request has been  Approved';
-                            EmailItem.SetBodyText(Body);
-                            EmailItem.Body.CreateInStream(Ins);
-                            EmailItem.ID := CreateGuid();
-                            EmailItem.Insert(true);
-                            EmailScenario := EmailScenario::Default;
-                            Email.Send(EmailItem, EmailScenario);
-                        end else
-                            Message('Notification email has been sent already');
-                    end
-                end;
-            }
-            action(Reject)
-            {
-                ApplicationArea = Suite;
-                Caption = 'Reject';
-                Image = Reject;
-                Scope = Repeater;
-                ToolTip = 'Reject the approval request.';
-
-                trigger OnAction()
-                var
-                    ApprovalEntry: Record "Enrolment Request";
-                    StudentRecord: Record "Student Information";
-                    MailMessage: Codeunit "Email Message";
-                    Email: Codeunit "Mail Management";
-                    EmailItem: Record "Email Item";
-                    EmailScenario: Enum "Email Scenario";
-                    TempBlob: Codeunit "Temp Blob";
-                    Body: Text;
-                    Ins: InStream;
-                    CourseInformCapacityFunctionCodeunit: Codeunit CourseInformCapacityFunction;
-                begin
-
-                    ApprovalEntry.SetRange("Entry No.", Rec."Entry No.");
-                    if ApprovalEntry.FindFirst() then begin
-                        if ApprovalEntry."Notification sent" = false then begin
-                            StudentRecord.Get(ApprovalEntry."Student No.");
-                            ApprovalEntry.Status := ApprovalEntry.Status::Rejected;
-                            ApprovalEntry."Approved ID" := UserId();
-                            ApprovalEntry."Approval Date" := CurrentDateTime();
-                            ApprovalEntry."Notification sent" := true;
-                            ApprovalEntry.Modify(true);
-                            Commit();
-
-                            Body := 'Dear ' + StudentRecord."First Name" + ',<br><br><br>' +
-                                   'Your enrolment request for the course ' + ApprovalEntry."Course ID" + ' has been rejected.' + '<br><br><br><br>' +
-                                   'Best regards,' + '<br>' +
-                                   '<em>' + 'Your University Team' + '</em>';
-
-                            EmailItem.Init();
-                            EmailItem."Send to" := StudentRecord.Email;
-                            EmailItem.Subject := 'Your Enrolment Request has been  Rejected';
-                            CourseInformCapacityFunctionCodeunit.GetCourseCapacityInfo(Rec."Course ID", Rec."Student No.");
-                            EmailItem.SetBodyText(Body);
-                            EmailItem.Body.CreateInStream(Ins);
-                            EmailItem.ID := CreateGuid();
-                            EmailItem.Insert(true);
-                            EmailScenario := EmailScenario::Default;
-                            Email.Send(EmailItem, EmailScenario);
-                        end else
-                            Message('Notification email has been sent already');
-                    end
-                end;
-            }
-            action(Cancel)
-            {
-                ApplicationArea = All;
-                Caption = 'Cancel Request';
-                Image = Cancel;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-
-                trigger OnAction()
-                var
-                    EnrolmentRequest: Record "Enrolment Request";
-                    CourseInformCapacityFunctionCodeunit: Codeunit CourseInformCapacityFunction;
-                begin
-                    EnrolmentRequest.SetRange("Entry No.", Rec."Entry No.");
-                    if EnrolmentRequest.FindFirst() then begin
-                        if EnrolmentRequest.Status = EnrolmentRequest.Status::Pending then begin
-                            CourseInformCapacityFunctionCodeunit.GetCourseCapacityInfo(Rec."Course ID", Rec."Student No.");
-                            EnrolmentRequest.Delete(true);
-                            Message('Enrolment request has been cancelled successfully.');
-                        end else
-                            Error('You can only cancel requests that are still pending.');
-                    end else
-                        Error('Enrolment request not found.');
-                end;
-            }
-        }
-        area(Navigation)
-        {
             group(PrintSend)
             {
                 Caption = 'Print/Send';
                 action(PrintStudentCourseInformation)
                 {
                     ApplicationArea = All;
-                    Caption = 'Print Course Overview Report';
+                    Caption = 'Print/Send';
+                    Image = Print;
 
                     trigger OnAction()
                     var
@@ -206,6 +73,162 @@ page 50504 "Enrolment Request"
                     end;
                 }
             }
+            group(Approval)
+            {
+                Caption = 'Approve/Reject';
+                action(Approve)
+                {
+                    ApplicationArea = Suite;
+                    Caption = 'Approve';
+                    Image = Approve;
+                    Scope = Repeater;
+                    ToolTip = 'Approve the requested changes.';
+
+                    trigger OnAction()
+                    var
+                        ApprovalEntry: Record "Enrolment Request";
+                        StudentRecord: Record "Student Information";
+                        MailMessage: Codeunit "Email Message";
+                        Email: Codeunit "Mail Management";
+                        EmailItem: Record "Email Item";
+                        EmailScenario: Enum "Email Scenario";
+                        TempBlob: Codeunit "Temp Blob";
+                        Body: Text;
+                        Ins: InStream;
+                    begin
+                        ApprovalEntry.SetRange("Entry No.", Rec."Entry No.");
+                        if ApprovalEntry.FindFirst() then begin
+                            if ApprovalEntry."Notification sent" = false then begin
+                                StudentRecord.Get(ApprovalEntry."Student No.");
+                                ApprovalEntry.Status := ApprovalEntry.Status::Approved;
+                                ApprovalEntry."Approved ID" := UserId();
+                                ApprovalEntry."Approval Date" := CurrentDateTime();
+                                ApprovalEntry."Notification sent" := true;
+                                ApprovalEntry.Modify(true);
+                                Commit();
+
+                                Body := 'Dear ' + StudentRecord."First Name" + ',<br><br><br>' +
+                                       'Your enrolment request for the course ' + ApprovalEntry."Course ID" + ' has been approved.' + '<br><br><br><br>' +
+                                       'Best regards,' + '<br>' +
+                                       '<em>' + 'Your University Team' + '</em>';
+
+                                EmailItem.Init();
+                                EmailItem."Send to" := StudentRecord.Email;
+                                EmailItem.Subject := 'Your Enrolment Request has been  Approved';
+                                EmailItem.SetBodyText(Body);
+                                EmailItem.Body.CreateInStream(Ins);
+                                EmailItem.ID := CreateGuid();
+                                EmailItem.Insert(true);
+                                EmailScenario := EmailScenario::Default;
+                                Email.Send(EmailItem, EmailScenario);
+                            end else
+                                Message('Notification email has been sent already');
+                        end
+                    end;
+                }
+                action(Reject)
+                {
+                    ApplicationArea = Suite;
+                    Caption = 'Reject';
+                    Image = Reject;
+                    Scope = Repeater;
+                    ToolTip = 'Reject the approval request.';
+                    trigger OnAction()
+                    var
+                        ApprovalEntry: Record "Enrolment Request";
+                        StudentRecord: Record "Student Information";
+                        MailMessage: Codeunit "Email Message";
+                        Email: Codeunit "Mail Management";
+                        EmailItem: Record "Email Item";
+                        EmailScenario: Enum "Email Scenario";
+                        TempBlob: Codeunit "Temp Blob";
+                        Body: Text;
+                        Ins: InStream;
+                        CourseInformCapacityFunctionCodeunit: Codeunit CourseInformCapacityFunction;
+                    begin
+
+                        ApprovalEntry.SetRange("Entry No.", Rec."Entry No.");
+                        if ApprovalEntry.FindFirst() then begin
+                            if ApprovalEntry."Notification sent" = false then begin
+                                StudentRecord.Get(ApprovalEntry."Student No.");
+                                ApprovalEntry.Status := ApprovalEntry.Status::Rejected;
+                                ApprovalEntry."Approved ID" := UserId();
+                                ApprovalEntry."Approval Date" := CurrentDateTime();
+                                ApprovalEntry."Notification sent" := true;
+                                ApprovalEntry.Modify(true);
+                                Commit();
+
+                                Body := 'Dear ' + StudentRecord."First Name" + ',<br><br><br>' +
+                                       'Your enrolment request for the course ' + ApprovalEntry."Course ID" + ' has been rejected.' + '<br><br><br><br>' +
+                                       'Best regards,' + '<br>' +
+                                       '<em>' + 'Your University Team' + '</em>';
+
+                                EmailItem.Init();
+                                EmailItem."Send to" := StudentRecord.Email;
+                                EmailItem.Subject := 'Your Enrolment Request has been  Rejected';
+                                CourseInformCapacityFunctionCodeunit.GetCourseCapacityInfo(Rec."Course ID", Rec."Student No.");
+                                EmailItem.SetBodyText(Body);
+                                EmailItem.Body.CreateInStream(Ins);
+                                EmailItem.ID := CreateGuid();
+                                EmailItem.Insert(true);
+                                EmailScenario := EmailScenario::Default;
+                                Email.Send(EmailItem, EmailScenario);
+                            end else
+                                Message('Notification email has been sent already');
+                        end
+                    end;
+                }
+                action(Cancel)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Cancel Request';
+                    Image = Cancel;
+                    Scope = Repeater;
+                    trigger OnAction()
+                    var
+                        EnrolmentRequest: Record "Enrolment Request";
+                        CourseInformCapacityFunctionCodeunit: Codeunit CourseInformCapacityFunction;
+                    begin
+                        EnrolmentRequest.SetRange("Entry No.", Rec."Entry No.");
+                        if EnrolmentRequest.FindFirst() then begin
+                            if EnrolmentRequest.Status = EnrolmentRequest.Status::Pending then begin
+                                CourseInformCapacityFunctionCodeunit.GetCourseCapacityInfo(Rec."Course ID", Rec."Student No.");
+                                EnrolmentRequest.Delete(true);
+                                Message('Enrolment request has been cancelled successfully.');
+                            end else
+                                Error('You can only cancel requests that are still pending.');
+                        end else
+                            Error('Enrolment request not found.');
+                    end;
+                }
+            }
+        }
+        area(Promoted)
+        {
+            group(CategoryProcess)
+            {
+                Caption = 'Approval';
+                ShowAs = SplitButton;
+                actionref(ApproveCategory; Approve)
+                {
+                }
+                actionref(RejectCategory; Reject)
+                {
+                }
+                actionref(CancelCategory; Cancel)
+                {
+                }
+            }
+            group(CategoryPrint)
+            {
+                Caption = 'Print/Send';
+                ShowAs = SplitButton;
+                actionref(PrintSendCategory; PrintStudentCourseInformation)
+                {
+                }
+            }
+
+
         }
     }
 }
