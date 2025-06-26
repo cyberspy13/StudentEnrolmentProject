@@ -5,7 +5,7 @@ page 50504 "Enrolment Request"
     PageType = List;
     SourceTable = "Enrolment Request";
     UsageCategory = Lists;
-    Editable = False;
+    Editable = true;
 
     layout
     {
@@ -100,12 +100,6 @@ page 50504 "Enrolment Request"
                         if ApprovalEntry.FindFirst() then begin
                             if ApprovalEntry."Notification sent" = false then begin
                                 StudentRecord.Get(ApprovalEntry."Student No.");
-                                ApprovalEntry.Status := ApprovalEntry.Status::Approved;
-                                ApprovalEntry."Approved ID" := UserId();
-                                ApprovalEntry."Approval Date" := CurrentDateTime();
-                                ApprovalEntry."Notification sent" := true;
-                                ApprovalEntry.Modify(true);
-                                Commit();
 
                                 Body := 'Dear ' + StudentRecord."First Name" + ',<br><br><br>' +
                                        'Your enrolment request for the course ' + ApprovalEntry."Course ID" + ' has been approved.' + '<br><br><br><br>' +
@@ -121,6 +115,16 @@ page 50504 "Enrolment Request"
                                 EmailItem.Insert(true);
                                 EmailScenario := EmailScenario::Default;
                                 Email.Send(EmailItem, EmailScenario);
+                                if not CONFIRM('Do you want to send the approval email to the student?', true) then begin
+                                    ApprovalEntry.Status := ApprovalEntry.Status::Pending;
+                                    ApprovalEntry."Notification sent" := false;
+                                    exit;
+                                end else
+                                    ApprovalEntry.Status := ApprovalEntry.Status::Approved;
+                                ApprovalEntry."Approval Date" := CurrentDateTime();
+                                ApprovalEntry.Modify(true);
+                                ApprovalEntry."Notification sent" := true;
+                                ApprovalEntry.Modify();
                             end else
                                 Message('Notification email has been sent already');
                         end
@@ -151,12 +155,6 @@ page 50504 "Enrolment Request"
                         if ApprovalEntry.FindFirst() then begin
                             if ApprovalEntry."Notification sent" = false then begin
                                 StudentRecord.Get(ApprovalEntry."Student No.");
-                                ApprovalEntry.Status := ApprovalEntry.Status::Rejected;
-                                ApprovalEntry."Approved ID" := UserId();
-                                ApprovalEntry."Approval Date" := CurrentDateTime();
-                                ApprovalEntry."Notification sent" := true;
-                                ApprovalEntry.Modify(true);
-                                Commit();
 
                                 Body := 'Dear ' + StudentRecord."First Name" + ',<br><br><br>' +
                                        'Your enrolment request for the course ' + ApprovalEntry."Course ID" + ' has been rejected.' + '<br><br><br><br>' +
@@ -173,6 +171,16 @@ page 50504 "Enrolment Request"
                                 EmailItem.Insert(true);
                                 EmailScenario := EmailScenario::Default;
                                 Email.Send(EmailItem, EmailScenario);
+                                if Not Confirm('Do you want to send the rejection email to the student?', true) then begin
+                                    ApprovalEntry.Status := ApprovalEntry.Status::Pending;
+                                    ApprovalEntry."Notification sent" := false;
+                                    exit;
+                                end else
+                                    ApprovalEntry.Status := ApprovalEntry.Status::Rejected;
+                                ApprovalEntry."Approved ID" := UserId();
+                                ApprovalEntry."Approval Date" := CurrentDateTime();
+                                ApprovalEntry."Notification sent" := true;
+                                ApprovalEntry.Modify(true);
                             end else
                                 Message('Notification email has been sent already');
                         end
@@ -181,7 +189,7 @@ page 50504 "Enrolment Request"
                 action(Cancel)
                 {
                     ApplicationArea = All;
-                    Caption = 'Cancel Request';
+                    Caption = 'Cancel';
                     Image = Cancel;
                     Scope = Repeater;
                     trigger OnAction()
