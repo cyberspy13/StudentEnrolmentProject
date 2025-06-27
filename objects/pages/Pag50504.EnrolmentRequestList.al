@@ -5,7 +5,7 @@ page 50504 "Enrolment Request"
     PageType = List;
     SourceTable = "Enrolment Request";
     UsageCategory = Lists;
-    Editable = true;
+    Editable = False;
 
     layout
     {
